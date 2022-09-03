@@ -1,0 +1,58 @@
+@font-face {
+    font-family: 'DSEG14';
+    src: url(fonts/DSEG14Classic-Regular.woff2);
+}
+
+*, ::after, ::before {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+#calculator {
+    border: solid black 1px;
+    padding: 50px 15px 30px;
+}
+
+#screen {
+    border: solid black 1px;
+    height: 22px;
+    font-family: DSEG14;
+    display:grid;
+}
+
+.displaytext {
+    grid-column: 1;
+    grid-row: 1;
+    color: black;
+    padding-right: 2px; /* for the decimal point of last digit */
+    display: inline-flex;
+    align-items: center;
+    justify-content: right;
+}
+
+/* display grid on #screen and same grid-column and row for elements makes the appear one above the another */
+
+.background {
+    opacity: 0.2;
+}
+
+
+#keys {
+    display: inline-grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+#keys > button:nth-child(-n+2) {
+    grid-column: span 2;
+}
