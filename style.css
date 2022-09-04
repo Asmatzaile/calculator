@@ -3,10 +3,15 @@
     src: url(fonts/DSEG14Classic-Regular.woff2);
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+main {
+    background-color: rgb(245, 245, 245);
+}
+
 *, ::after, ::before {
     margin: 0;
     padding: 0;
-    overflow: hidden;
     box-sizing: border-box;
     font-family: inherit;
 }
@@ -20,39 +25,120 @@ main {
 }
 
 #calculator {
-    border: solid black 1px;
-    padding: 50px 15px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color:rgb(189, 251, 189);
+    padding: 20px 10px 5px;
+    border-radius: 5px;
 }
 
 #screen {
-    border: solid black 1px;
-    height: 22px;
+    border-radius: 5px;
+    height: 40px;
     font-family: DSEG14;
     display:grid;
+    background-color: rgba(177, 177, 128, 0.496);
 }
 
 .displaytext {
     grid-column: 1;
-    grid-row: 1;
+    grid-row: 1;  /* this and previous line: ame grid-column and row for elements makes the appear one above the another */
     color: black;
     padding-right: 2px; /* for the decimal point of last digit */
     display: inline-flex;
     align-items: center;
     justify-content: right;
+    font-size: 24px;
 }
-
-/* display grid on #screen and same grid-column and row for elements makes the appear one above the another */
 
 .background {
     opacity: 0.2;
 }
 
-
 #keys {
     display: inline-grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 6px 2px;
+    font-family: ubuntu;
 }
 
-#keys > button:nth-child(-n+2) {
+#keys > :nth-child(-n+2) {
     grid-column: span 2;
+}
+
+/* 3d buttons inspired by https://www.joshwcomeau.com/animation/3d-button/ */
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.08s;
+}
+
+button:focus-visible {  /*outline visible for keyboard navigation */
+    outline: revert;
+}
+
+button, .bevel-container {
+    display: grid;
+}
+
+.front, .back {
+    grid-row: 1;
+    grid-column: 1;
+    background-color: inherit;
+    border-radius: inherit;
+}
+
+.front {
+    transform: translateY(-4px);
+}
+
+#calculator {
+    transform: translateY(-8px);
+}
+
+.btn-front {
+    padding: 10px;
+    transition:
+      transform
+      600ms
+      cubic-bezier(.3, .7, .4, 1);
+}
+
+.back {
+    filter: brightness(0.8);
+}
+
+button:hover .front{
+    transform: translateY(-5px);
+    transition:
+      transform
+      250ms
+      cubic-bezier(.3, .7, .4, 1.5);
+}
+
+button:active .front{
+    transform: translateY(-2px);
+}
+
+.btn-blue {
+    background-color: hsl(240, 100%, 80%);
+}
+
+.btn-white {
+    background-color: hsl(0, 0%, 100%);
+}
+
+.btn-orange {
+    background-color: hsl(25, 100%, 70%);
+}
+
+.clear-all {
+    background-color: hsl(0, 0%, 100%);
+}
+
+.clear-all:hover {
+    background-color: rgb(255, 120, 120);
 }

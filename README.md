@@ -13,6 +13,6 @@ Steps to follow:
 Extra credit:
 
 - [ ] Add a . button and let users input decimals.
-- [ ] Make it look nicer.
+- [x] Make it look nicer.
 - [ ] Add a "backspace" button.
 - [ ] Add keyboard support.
