@@ -15,4 +15,4 @@ Extra credit:
 - [x] Add a . button and let users input decimals.
 - [x] Make it look nicer.
 - [x] Add a "backspace" button.
-- [ ] Add keyboard support.
+- [x] Add keyboard support.

@@ -123,6 +123,14 @@ button:active .front{
     transform: translateY(-2px);
 }
 
+.virtualclick {
+    transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+    transform: translateY(-2px);
+}
+
 .btn-blue {
     background-color: hsl(240, 100%, 80%);
 }

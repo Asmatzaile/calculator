@@ -30,12 +30,16 @@ const screen = document.querySelector('.screen-digits');
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
+    if (!button.classList.contains("clear")) {
+        button.classList.add(`unicode-${button.textContent.charCodeAt(0)}`);
+    }
+    button.addEventListener('mousedown', mouseHandler);
+
     const front = document.createElement('div');
     const back = document.createElement('div');
     front.classList.add('front', 'btn-front');
     back.classList.add('back');
     front.textContent = button.textContent;
-    button.addEventListener('mousedown', keyHandler);
     button.textContent = "";
     button.appendChild(back);
     button.appendChild(front);
@@ -57,13 +61,15 @@ bevels.forEach((bevel) => {
     wrapper.appendChild(bevel);
 });
 
-document.addEventListener('mouseup', keyHandler);
+document.addEventListener('mouseup', mouseHandler);
 
-function keyHandler(e) {
-    if (e.type === "mousedown") pressKey(e.currentTarget);
+function mouseHandler(e) {
+    if (e.type === "mousedown") {
+        pressKey(e.currentTarget);
+        key.classList.add('clicked');
+    }
     if (e.type === "mouseup") {
-        const pressedList = document.querySelectorAll('.pressed');
-        pressedList.forEach(releaseKey);
+        releaseKey(document.querySelector('.clicked'))
     }
 }
 
@@ -75,7 +81,7 @@ let mode = "idle";
 
 function pressKey(key) {
     playKey(key, 1);
-    key.classList.add('pressed');
+    
     if (key.classList.contains("clear-all")) {
         reset();
         return;
@@ -141,7 +147,7 @@ function calculate() {
 
 function releaseKey(key) {
     playKey(key, 0);
-    key.classList.remove('pressed');
+    key.classList.remove('clicked');
 }
 
 function populateScreen(key) {
@@ -198,4 +204,65 @@ function playKey(key, state) {
     const audio = document.querySelector(`audio[data-id="${num}_${state}"]`);
     audio.currentTime = 0;
     audio.play();
+}
+
+document.addEventListener('keydown', (e) => {
+    if(!e.repeat) {
+        keyboardHandler(e.key, e.type);
+    }
+});
+document.addEventListener('keyup', (e) => {
+    if(!e.repeat) {
+        keyboardHandler(e.key, e.type);
+    }
+});
+
+function keyboardHandler(key, type) {
+    const keyCode = getKeyCode(key);
+    let keyObj;
+    if (keyCode === null) return;
+    if (isNaN(+keyCode)) {
+        keyObj = document.querySelector(`.${keyCode}`);
+    } else {
+        keyObj = document.querySelector(`.unicode-${keyCode}`);
+    }
+    console.log(keyObj);
+    console.log(type)
+    if (type === "keydown") {
+        pressKey(keyObj);
+        keyObj.lastElementChild.classList.add("virtualclick");
+    }
+    if (type === "keyup") {
+        releaseKey(keyObj);
+        keyObj.lastElementChild.classList.remove("virtualclick");
+    }
+}
+
+function getKeyCode(key) {
+    if (!isNaN(+key)) return key.charCodeAt(0);
+    switch(key) {
+        case ".":
+        case ",":
+            return 46; // ".".charCodeAt(0);
+        case "Enter":
+        case "=":
+            return 61; // "=".charCodeAt(0);
+        case "+":
+        case "-":
+            return key.charCodeAt(0);
+        case "x":
+        case "X":
+        case "*":
+            return 215; // "×".charCodeAt(0);
+        case "/":
+            return 247; // "÷".charCodeAt(0);
+        case "c":
+        case "C":
+        case "Escape":
+            return "clear-all";
+        case "Backspace":
+            return "backspace";
+        default:
+            return null;
+    }
 }
