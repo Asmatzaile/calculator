@@ -63,7 +63,7 @@ main {
     font-family: ubuntu;
 }
 
-#keys > :nth-child(-n+2) {
+.clear {                    /* would also work with #keys > :nth-child(-n+2) */
     grid-column: span 2;
 }
 

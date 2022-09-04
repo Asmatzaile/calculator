@@ -20,6 +20,8 @@ const operate = (a,operator,b) => {
     }
 }
 
+const screen = document.querySelector('.screen-digits');
+
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     const front = document.createElement('div');
@@ -52,7 +54,7 @@ bevels.forEach((bevel) => {
 document.addEventListener('mouseup', keyHandler);
 
 function keyHandler(e) {
-    if (e.type === "mousedown") pressKey(e.target);
+    if (e.type === "mousedown") pressKey(e.currentTarget);
     if (e.type === "mouseup") {
         const pressedList = document.querySelectorAll('.pressed');
         pressedList.forEach(releaseKey);
@@ -60,12 +62,43 @@ function keyHandler(e) {
 }
 
 function pressKey(key) {
+    populateScreen(key);    
     const num = Math.floor(Math.random()*4+1);
     const audio = document.querySelector(`audio[data-id="${num}_1"]`);
     key.classList.add('pressed');
     key.num = num;
     audio.currentTime = 0;
     audio.play();
+}
+
+function populateScreen(key) {
+    if (key.classList.contains("clear-all")) {
+        screen.textContent = "";
+        return;
+    }
+    if (key.classList.contains("backspace")) {
+        removeHangingPoint(screen);
+        removeLastCharacter(screen);
+        removeHangingPoint(screen);
+        return;
+    }
+    if (key.classList.contains("number")) {
+        if (key.textContent === ".") {
+            if (screen.textContent.includes(".")) return;
+        }
+        if ((screen.textContent.length -
+            screen.textContent.includes(".")) <10) { /* otherwise, decimal point occupies extra character */
+                screen.textContent += key.textContent;
+        }
+    }
+}
+
+function removeLastCharacter(obj) {
+    obj.textContent = obj.textContent.slice(0, -1);
+}
+
+function removeHangingPoint(obj) {
+    if (obj.textContent.slice(-1) === ".") removeLastCharacter(obj);
 }
 
 function releaseKey(key) {
