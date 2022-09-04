@@ -66,10 +66,11 @@ document.addEventListener('mouseup', mouseHandler);
 function mouseHandler(e) {
     if (e.type === "mousedown") {
         pressKey(e.currentTarget);
-        key.classList.add('clicked');
+        e.currentTarget.classList.add('clicked');
     }
     if (e.type === "mouseup") {
-        releaseKey(document.querySelector('.clicked'))
+        const key = document.querySelector('.clicked')
+        if (key) releaseKey(key);
     }
 }
 
@@ -226,8 +227,6 @@ function keyboardHandler(key, type) {
     } else {
         keyObj = document.querySelector(`.unicode-${keyCode}`);
     }
-    console.log(keyObj);
-    console.log(type)
     if (type === "keydown") {
         pressKey(keyObj);
         keyObj.lastElementChild.classList.add("virtualclick");
