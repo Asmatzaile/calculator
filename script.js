@@ -83,8 +83,13 @@ function populateScreen(key) {
         return;
     }
     if (key.classList.contains("number")) {
+        if((screen.textContent) === "0") screen.textContent = "";
         if (key.textContent === ".") {
             if (screen.textContent.includes(".")) return;
+            if(screen.textContent === "") {
+                screen.textContent = "0.";
+                return;
+            }
         }
         if ((screen.textContent.length -
             screen.textContent.includes(".")) <10) { /* otherwise, decimal point occupies extra character */
