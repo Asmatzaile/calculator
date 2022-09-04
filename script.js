@@ -27,7 +27,7 @@ buttons.forEach((button) => {
     front.classList.add('front', 'btn-front');
     back.classList.add('back');
     front.textContent = button.textContent;
-    button.addEventListener('mousedown', playAudio);
+    button.addEventListener('mousedown', keyHandler);
     button.textContent = "";
     button.appendChild(back);
     button.appendChild(front);
@@ -49,25 +49,29 @@ bevels.forEach((bevel) => {
     wrapper.appendChild(bevel);
 });
 
-document.addEventListener('mouseup', playAudio);
+document.addEventListener('mouseup', keyHandler);
 
-function playAudio(e) {
-    if (e.type === "mousedown") {
-        const num = Math.floor(Math.random()*4+1);
-        const audio = document.querySelector(`audio[data-id="${num}_1"]`);
-        e.target.classList.add('pressed');
-        e.target.num = num;
-        audio.play();
-    }
+function keyHandler(e) {
+    if (e.type === "mousedown") pressKey(e.target);
     if (e.type === "mouseup") {
         const pressedList = document.querySelectorAll('.pressed');
         pressedList.forEach(releaseKey);
     }
 }
 
-function releaseKey(pressed) {
-    const audio = document.querySelector(`audio[data-id="${pressed.num}_0"]`);
+function pressKey(key) {
+    const num = Math.floor(Math.random()*4+1);
+    const audio = document.querySelector(`audio[data-id="${num}_1"]`);
+    key.classList.add('pressed');
+    key.num = num;
+    audio.currentTime = 0;
     audio.play();
-    pressed.num = "";
-    pressed.classList.remove('pressed');
+}
+
+function releaseKey(key) {
+    const audio = document.querySelector(`audio[data-id="${key.num}_0"]`);
+    audio.currentTime = 0;
+    audio.play();
+    key.num = "";
+    key.classList.remove('pressed');
 }
